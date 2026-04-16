@@ -28,4 +28,7 @@ class NewCustomerPage:
         self.page.locator(self.submit).click()
 
 
-        
+    def enter_customer_name(self, customer_name):
+        self.page.locator(self.customer_name).fill(customer_name)
+
+

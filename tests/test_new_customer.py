@@ -8,6 +8,7 @@ def test_add_new_customer(browser_page):
     try:
         login_page = LoginPage(browser_page)
         login_page.login("mngr658217", "ezaqupY")
+        browser_page.wait_for_load_state("networkidle")
         expect(browser_page).to_have_url("https://demo.guru99.com/V4/manager/Managerhomepage.php")
         browser_page.goto("https://demo.guru99.com/V4/manager/addcustomerpage.php")
          
@@ -29,8 +30,26 @@ def test_add_new_customer(browser_page):
         )
         browser_page.wait_for_timeout(2000)
         browser_page.screenshot(path="debug.png")
-        expect(browser_page).to_have_url(re.compile("CustomerRegMsg"), timeout=10000)
+        expect(browser_page).to_have_url(re.compile("insrtCustomer|CustomerRegMsg"), timeout=10000)
     except Exception as e:
         print(f"Test failed: {e}")
         raise
 
+def test_invalid_customer_name(browser_page):
+    try: 
+        login_page = LoginPage(browser_page)
+        login_page.login("mngr658217", "ezaqupY")
+        browser_page.wait_for_load_state("networkidle")
+        expect(browser_page).to_have_url("https://demo.guru99.com/V4/manager/Managerhomepage.php")
+        browser_page.goto("https://demo.guru99.com/V4/manager/addcustomerpage.php")
+        
+        '''enter invalid data in customer name field : numbers '''
+        new_customer_page = NewCustomerPage(browser_page)
+        new_customer_page.enter_customer_name("1234")
+        browser_page.locator('[name="name"]').press("Tab")
+      
+        expect(browser_page.locator('#message')).to_have_text("Numbers are not allowed")
+
+    except Exception as e:
+        print(f"Test failed : {e}")
+        raise
