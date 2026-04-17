@@ -31,4 +31,8 @@ class NewCustomerPage:
     def enter_customer_name(self, customer_name):
         self.page.locator(self.customer_name).fill(customer_name)
 
+    def enter_pin_details(self, pin):
+        self.page.locator(self.pin).fill(pin)
+        self.page.locator(self.pin).press("Tab")
+
 

@@ -1,3 +1,4 @@
+import pytest 
 from pages.login_page import LoginPage
 from pages.new_customer_page import NewCustomerPage
 from playwright.sync_api import expect
@@ -34,8 +35,15 @@ def test_add_new_customer(browser_page):
     except Exception as e:
         print(f"Test failed: {e}")
         raise
+'''parameterized  data driven testing ''' 
+@pytest.mark.parametrize("invalid_name, expected_message", [
+    ("1234", "Numbers are not allowed"),
+    ("name@#$", "Special characters are not allowed"),
+    ("   ", "First character can not have space")
+])
 
-def test_invalid_customer_name(browser_page):
+
+def test_invalid_customer_name(browser_page,invalid_name, expected_message):
     try: 
         login_page = LoginPage(browser_page)
         login_page.login("mngr658217", "ezaqupY")
@@ -44,11 +52,11 @@ def test_invalid_customer_name(browser_page):
         browser_page.goto("https://demo.guru99.com/V4/manager/addcustomerpage.php")
         
         '''enter invalid data in customer name field : numbers '''
-        new_customer_page = NewCustomerPage(browser_page)
-        new_customer_page.enter_customer_name("1234")
+        new_customer_page = NewCustomerPage(browser_page) 
+        new_customer_page.enter_customer_name(invalid_name)
         browser_page.locator('[name="name"]').press("Tab")
       
-        expect(browser_page.locator('#message')).to_have_text("Numbers are not allowed")
+        expect(browser_page.locator('#message')).to_have_text(expected_message)
 
     except Exception as e:
         print(f"Test failed : {e}")
