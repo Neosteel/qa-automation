@@ -25,3 +25,6 @@ jobs:
 
     - name: Run API tests
       run: pytest tests/test_api.py -v
+
+    - name: Run UI tests
+      run: pytest tests/test_intro.py -v
