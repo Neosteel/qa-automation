@@ -20,8 +20,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install pytest playwright pytest-playwright requests openpyxl
-        playwright install --with-deps chromium allure-pytest 
+        pip install pytest playwright pytest-playwright requests openpyxl allure-pytest
+        playwright install --with-deps chromium  
 
     - name: Run API tests
       run: pytest tests/test_api.py -v
